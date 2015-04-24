@@ -1,16 +1,21 @@
 <?php
 
-	$key = "API KEY HERE";
-	$langFrom = "en";
-	$langTo = "vi";
+	include_once "transKey.php";
+	//get the detected language id
+	$langFrom = $detectedLanguage;
+	//get the language-to from the drop list
+	$langTo = $_POST['langList'];
+	//get the users text
 	$text = $_POST['ta_original'];
 
-	$getFile = file_get_contents("https://translate.yandex.net/api/v1.5/tr.json/translate?key=".$key."&lang=".$langFrom."-".$langTo."&text=".urlencode($text));
-	$json = json_decode($getFile, true);
+	//fetch the translation
+	$translateText = file_get_contents("https://translate.yandex.net/api/v1.5/tr.json/translate?key=".$key."&lang=".$langFrom."-".$langTo."&text=".urlencode($text));
+	$translatejson = json_decode($translateText, true);
 
-	$int_code = $json['code'];
+	$int_code = $translatejson['code'];
 	
-	$translated = $json['text'][0];
+	//translated text
+	$translated = $translatejson['text'][0];
 
 	switch($int_code){
 		case 200:
@@ -44,3 +49,6 @@
 
 
 ?>
+
+
+
