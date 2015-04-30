@@ -1,21 +1,12 @@
 function start(){
+	var languageSelected = false;
+
+	//Disable the translate and save button
 	document.getElementById('submit').disabled=true;
-
+	if(document.getElementById('ta_translated').innerHTML == ""){
+		document.getElementById('save').disabled=true;
+	}
 	function onFileSelected(event){
-		//check if file and language is selected
-		var dropDown = document.getElementById('langList');
-		var selectedValue = dropDown.options[dropDown.selectedIndex].value;
-		var languageSelected;
-
-		if(selectedValue == "Select a language"){
-			languageSelected = false;
-		}else{
-			languageSelected = true;
-		}
-
-		if(document.getElementById('file').value != "" && languageSelected != false){
-			document.getElementById('submit').disabled=false;
-		}
 		//check if File API is supported
 		if(window.File){
 			//get the file from the element that triggered the event
@@ -35,12 +26,75 @@ function start(){
 		}else{
 			alert("File API not supported");
 		}
-
-		document.getElementById('ta_translated').innerHTML = " ";
 		
+		//document.getElementById('ta_translated').innerHTML = " ";
+		//alert(document.getElementById('ta_translated').innerHTML);
+		checkInput();
 	}
+
+
+	function onLangSelected(event){
+		//Get the language selected from the droplist
+		var dropDown = document.getElementById('langList');
+		var selectedValue = dropDown.options[dropDown.selectedIndex].value;
+		
+
+		//Determine if a language is selected
+		if(selectedValue == "Select a language"){
+			languageSelected = false;
+		}else{
+			languageSelected = true;
+		}
+
+		checkInput();
+	}
+
+
+	function checkInput(){
+		//Check that both a language and file has been selected
+		if(document.getElementById('file').value != "" && languageSelected != false){
+			//Enable the translate button
+			document.getElementById('submit').disabled=false;
+		}
+	}
+
+
+
+	function enableSave(){
+		document.getElementById('save').disabled=false;
+	}
+
+	//Browse button event listener
 	document.getElementById('file').addEventListener('change', onFileSelected, false);
-	document.getElementById('langList').addEventListener('change', onFileSelected, false);
+
+	//Drop-list event listener
+	document.getElementById('langList').addEventListener('change', onLangSelected, false);
+
+	//
+	document.getElementById('submit').addEventListener('click', enableSave, false);
 }
 
 window.onload = start;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

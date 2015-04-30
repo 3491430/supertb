@@ -1,6 +1,4 @@
 <?php
-
-	include_once "transKey.php";
 	//get the detected language id
 	$langFrom = $detectedLanguage;
 	//get the language-to from the drop list
@@ -9,7 +7,7 @@
 	$text = $_POST['ta_original'];
 
 	//fetch the translation
-	$translateText = file_get_contents("https://translate.yandex.net/api/v1.5/tr.json/translate?key=".$key."&lang=".$langFrom."-".$langTo."&text=".urlencode($text));
+	$translateText = file_get_contents("https://translate.yandex.net/api/v1.5/tr.json/translate?key=".$config["key"]["translateKey"]."&lang=".$langFrom."-".$langTo."&text=".urlencode($text));
 	$translatejson = json_decode($translateText, true);
 
 	$int_code = $translatejson['code'];

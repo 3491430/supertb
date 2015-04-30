@@ -4,31 +4,60 @@
 	<meta charset="UTF-8">
 	<title>Home</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="js/loadFile.js"></script>
 
-	<?php 
-		if(!empty($_POST['submit'])){
-			if($_POST['langList'] == "Select a language"){
-				echo "Choose a language";
-			}else{
-				//include 'apikey/detect.php';
-				//include 'apikey/translate.php';
-			}
-		}
-	?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//Add click event to reset button
+			$('input[value="Reset"]').click(function(){
+				document.getElementById("ta_original").innerHTML = "";
+				document.getElementById("ta_translated").innerHTML = "";
+				//document.getElementById("langList").val('Select a language');
+			});
+
+			$("#ta_translated").change(function(){
+				$("#save").prop('disabled', false);
+			});
+		})
+	</script>
 </head>
 <body>
 	<div class="header">
-		<h1>Home</h1>
+		<h1>Translate</h1>
 		<hr/>		
 	</div>
 
 
 	<div class="content">
+	<?php 
+	//Check if tranlate button is clicked
+		if(isset($_POST['submit'])){
+			//Check language is selected
+			if($_POST['langList'] == "Select a language"){
+				echo "Choose a language </br>";
+			}
+			//Check file is selected
+			if(empty($_POST['file'])){
+				echo "Select a file";
+			}
+
+			if($_POST['langList'] != "Select a language" && !empty($_POST['file'])){
+				include 'config.php';
+				include 'detect.php';
+				//include 'translate.php';
+			}
+		}elseif(isset($_POST['save'])){
+			include 'saveFile.php';
+
+		}
+	?>
 		<form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="POST" id="mainForm">
 			<input type="reset" value="Reset">
 			<input type="file" id="file" name="file">
+			<input type="hidden" id="filename" name="filename" value="<?php echo $_POST['file'] ?>">
+			<input type="hidden" id="detectedLang" name="detectedLang" value="<?php echo $detectedLanguage; ?>" >
+			
 			<hr/>
 			<div class="droplist">
 				Translate to:
@@ -44,11 +73,11 @@
 					echo "<option>Select a language</option>";
 
 					foreach($langArr as $lang){
-						if($_POST['langList'] == $keys[$i]){
+						 if($_POST['langList'] == $keys[$i]){
 							echo "<option selected value='".$keys[$i]."'>".$lang."</option>";
-						}else{
+						 }else{
 							echo "<option value='".$keys[$i]."'>".$lang."</option>";
-						}
+						 }
 						$i++;
 					}
 					echo "</select>";
@@ -65,9 +94,10 @@
 			<div class="translated">
 				<strong>Translated</strong>
 				<br />
-				<textarea id="ta_translated" form="mainForm" name="ta_translated"><?php if(!empty($_POST)){ echo $translated;} ?></textarea>
+				<textarea id="ta_translated" form="mainForm" name="ta_translated"><?php if(!empty($_POST)){if(isset($translated)){echo $translated;}else{echo $_POST['ta_translated'];}} ?></textarea>
 			</div>
 			<div class="right">
+				<input type="submit" id="save" name="save" form="mainForm" value="Save">
 				<input type="submit" id="submit" name="submit" form="mainForm" value="Translate">
 			</div>
 		
@@ -76,5 +106,11 @@
 	<div class="footer">
 		<a href="http://translate.yandex.com">Powered by Yandex.Translate</a>
 	</div>
+	<?php 
+		echo "<pre>";
+		print_r($_POST); 
+		echo "</pre>";
+	?>
+	
 </body>
 </html>
