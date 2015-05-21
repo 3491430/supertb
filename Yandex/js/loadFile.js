@@ -3,7 +3,7 @@ function start(){
 
 	//Disable the translate and save button
 	document.getElementById('submit').disabled=true;
-	if(document.getElementById('ta_translated').innerHTML == ""){
+	if(document.getElementById('div_translated').innerHTML == ""){
 		document.getElementById('save').disabled=true;
 	}
 	function onFileSelected(event){

@@ -1,0 +1,50 @@
+index.php
+$langArr - array with language names
+$keys - array with language codes
+$_POST['file']
+$_POST['filename']
+$_POST['detectedLang'] - value is set from $detectedLanguage
+$_POST['div_translation']
+$_POST['langList']
+$_POST['ta_original']
+$_POST['save']
+$_POST['submit']
+
+config.php
+$config - array with api keys
+
+detect.php
+$detectThis - the text submitted from the textarea (ta_original)
+$detectLanguage - translation language detect request - json
+$languagejson - array from decoded json
+$detectedLanguage - array element with the language code
+$langCode - language code detected from textarea (ta_original)
+
+
+translate.php
+$langFrom - $langCode
+$langTo - $_POST['langList'] - chosen language to translate to - language code
+$text - $_POST['ta_original'] - the users uploaded text
+$text_arr - if the users text is english then turn the block into an array of singular words
+$transaltion_arr - array to hold individual words
+$translateText - translation api request json object
+$translatejson - array from decoded json
+$int_code - request response status
+$translated - translated text
+$translated_arr - if language translated to is english store word in array individually
+
+
+
+
+
+
+
+
+saveFile.php
+$filename_ext - $_POST['filename'] - array created splitting the filename and extension
+$filename - $filename_ext[0] - filename only, no extension
+$originalText - $_POST['ta_original']
+$langFrom - $_POST['detectedLang']
+$translatedText - $_POST['div_translation'] - whatevers in the div when the save button is clicked including html
+$langTo - $_POST['langList'] - language code from drop list
+$insert - sql query to add data
